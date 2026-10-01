@@ -1,0 +1,110 @@
+# ─── Dependencies ───────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# ─── Build output ───────────────────────────────────────────────────────────
+dist/
+dist-ssr/
+build/
+*.local
+
+# ─── Vite cache ─────────────────────────────────────────────────────────────
+.vite/
+.vite-cache/
+
+# ─── Environment files (NEVER commit secrets) ──────────────────────────────
+.env.local
+.env.*.local
+.env.development.local
+.env.production.local
+.env.test.local
+.env
+
+# Keep these committed (they're templates / shared defaults):
+.env.example
+.env.development
+.env.production
+
+# ─── Logs ───────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ─── Editor / IDE ───────────────────────────────────────────────────────────
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.project
+.classpath
+
+# ─── OS / system files ──────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ─── SSL certificates (local dev mkcert) ───────────────────────────────────
+# Your project ships with these, but teammates should generate their own.
+# Uncomment the lines below if you DON'T want to commit them:
+*.pem
+*.key
+*.crt
+localhost+*.pem
+localhost+*-key.pem
+
+# ─── Testing / coverage ─────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+*.lcov
+.vitest-cache/
+
+# ─── Temp / misc ────────────────────────────────────────────────────────────
+.cache/
+.tmp/
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig
+
+# ─── Package manager artifacts ──────────────────────────────────────────────
+.npm/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# ─── Uploaded / user-generated content (if any gets saved locally) ─────────
+uploads/
+public/uploads/
+
+# ─── Deployment ─────────────────────────────────────────────────────────────
+.vercel
+.netlify
+.firebase/
+.serverless/
+
+# ─── mkcert binary (if you don't want it committed) ─────────────────────────
+# Your current project has mkcert.exe committed; remove this comment
+# and uncomment the line below if you want to exclude it going forward:
+mkcert.exe
+mkcert

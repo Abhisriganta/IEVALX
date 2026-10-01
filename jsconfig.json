@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*":           ["./src/*"],
+      "@assets/*":     ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@config/*":     ["./src/config/*"],
+      "@constants/*":  ["./src/constants/*"],
+      "@contexts/*":   ["./src/contexts/*"],
+      "@hooks/*":      ["./src/hooks/*"],
+      "@layouts/*":    ["./src/layouts/*"],
+      "@pages/*":      ["./src/pages/*"],
+      "@routes/*":     ["./src/routes/*"],
+      "@services/*":   ["./src/services/*"],
+      "@theme/*":      ["./src/theme/*"],
+      "@utils/*":      ["./src/utils/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "build"]
+}
