@@ -16,7 +16,6 @@ export const QUESTION_TYPES = [
   { value: 'short_answer', label: 'Short Answer',      desc: 'Open text (manual eval)',        color: '#4666B8' },
   { value: 'coding',       label: 'Coding',            desc: 'Write code (manual eval)',       color: '#DC2626' },
   { value: 'scenario',     label: 'Scenario',          desc: 'Case-based (manual eval)',       color: '#6D28D9' },
-  { value: 'custom',       label: 'Custom',            desc: 'Your own type (manual eval)',    color: '#0E7490' },
 ];
 
 export const SECTION_PRESETS = [
@@ -27,7 +26,7 @@ export const SECTION_PRESETS = [
 
 export const LANGUAGES = ['python', 'javascript', 'java', 'c', 'cpp', 'sql'];
 
-export const SUBJECTIVE_TYPES = new Set(['short_answer', 'coding', 'scenario', 'custom']);
+export const SUBJECTIVE_TYPES = new Set(['short_answer', 'coding', 'scenario']);
 
 // ═════════════════════════════════════════════════════════════════════════════
 // ── FACTORIES ─────────────────────────────────────────────────────────────────
@@ -187,7 +186,7 @@ const backendToFrontendQuestion = (bq) => {
 
   const rawType    = bq.question_type || bq.type || 'mcq';
   const knownTypes = QUESTION_TYPES.map(t => t.value);
-  const type       = knownTypes.includes(rawType) ? rawType : 'custom';
+  const type       = knownTypes.includes(rawType) ? rawType : 'mcq';
   const customType = type === 'custom'
     ? (bq.custom_type || bq.content?.custom_type || (knownTypes.includes(rawType) ? '' : rawType) || '')
     : '';

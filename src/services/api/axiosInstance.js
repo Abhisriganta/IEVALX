@@ -58,16 +58,17 @@ async function doRefresh() {
   const token = getToken();
   if (!token || !isRealJwt(token)) return;
 
+  const refreshToken = localStorage.getItem('ievalx_refresh_token');
   try {
     const { data } = await axios.post(
       `${API_BASE_URL}/auth/refresh`,
-      {},
+      refreshToken ? { refresh_token: refreshToken } : {},
       { headers: { Authorization: `Bearer ${token}` } }
     );
     localStorage.setItem('ievalx_token', data.Token);
+    if (data.Refresh_Token) localStorage.setItem('ievalx_refresh_token', data.Refresh_Token);
     scheduleRefresh();
-  } catch {
-    const remaining = tokenExpiresIn(getToken());
+  } catch {    const remaining = tokenExpiresIn(getToken());
     if (remaining <= 0) clearSession();
   }
 }
@@ -106,11 +107,15 @@ let _refreshInFlight = null;
 async function refreshAccessToken() {
   const token = getToken();
   if (!token || !isRealJwt(token)) throw new Error('No valid token to refresh');
+  const refreshToken = localStorage.getItem('ievalx_refresh_token');
   const { data } = await axios.post(
     `${API_BASE_URL}/auth/refresh`,
-    {},
+    refreshToken ? { refresh_token: refreshToken } : {},
     { headers: { Authorization: `Bearer ${token}` } }
   );
+  if (!data?.Token) throw new Error('Refresh response missing Token');
+  localStorage.setItem('ievalx_token', data.Token);
+  if (data.Refresh_Token) localStorage.setItem('ievalx_refresh_token', data.Refresh_Token);
   if (!data?.Token) throw new Error('Refresh response missing Token');
   localStorage.setItem('ievalx_token', data.Token);
   scheduleRefresh();

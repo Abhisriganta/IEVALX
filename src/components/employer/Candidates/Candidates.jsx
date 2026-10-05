@@ -84,7 +84,7 @@ const SORT_OPTIONS = [
 ];
 
 const PAGE_SIZE_OPTIONS = [5, 10, 25, 50, 'all'];
-const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 9;
 
 const LS_JOBS_VIEW_KEY  = 'ievalx_candidates_jobs_view_mode';
 const LS_CANDS_VIEW_KEY = 'ievalx_candidates_cands_view_mode_v2';

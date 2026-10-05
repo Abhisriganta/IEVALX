@@ -47,7 +47,6 @@ export const DEFAULT_MARKS = {
   scenario:     8,
   coding:       15,
   sql:          5,
-  custom:       5,
 };
 
 // human-readable labels for the validation summary Alerts

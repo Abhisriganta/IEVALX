@@ -177,7 +177,8 @@ const LoginForm = ({ onSwitch }) => {
 
     // ── Persist + hydrate context ────────────────────────────────────────
     onLoginSuccess(realToken);
-    localStorage.setItem('ievalx_user', JSON.stringify(userObj));
+    const refreshToken = loginRes.data?.Refresh_Token;
+    if (refreshToken) localStorage.setItem('ievalx_refresh_token', refreshToken);    localStorage.setItem('ievalx_user', JSON.stringify(userObj));
 
     const companyIdToStore =
       loginType === 'company'  ? userObj.id :

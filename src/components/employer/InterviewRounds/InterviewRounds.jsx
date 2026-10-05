@@ -110,7 +110,7 @@ function InterviewCard({ s, viewMode = 'grid', onDetail, onMenu, onDelete,
                          selectable = false, selected = false, onToggleSelect = () => {} }) {
   const cname = getCandidateName(s);
   const initials = cname.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase() || '?';
-  const photoUrl = jobseekerService.photoUrlFor(s.candidate?.id);
+  const photoUrl = jobseekerService.photoUrlFor(s.candidate?.candidate_id);
   const st = STATUS_STYLE[s.status] || STATUS_STYLE.draft;
   const fold = FOLD_MAP[s.status] || DEFAULT_FOLD;
   const tc = TYPE_COLOR[s.interview_type] || B.faint;
