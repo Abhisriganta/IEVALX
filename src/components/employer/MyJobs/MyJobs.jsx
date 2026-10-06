@@ -488,6 +488,7 @@ const MyJobs = (props) => {
   const handleViewApplicants = (job) => navigate(`/employer/my-jobs/${job.id}/applicants`, { state: { job } });
 
   const handleEdit = async (job) => {
+    if (job?.is_owner === false) { handleView(job); return; }
     try {
       const req    = isAdmin ? null : (await getEditRequestStatus(job.id))?.Request;
       const status = isAdmin ? 'APPROVED' : req?.status;

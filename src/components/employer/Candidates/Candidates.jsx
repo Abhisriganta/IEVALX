@@ -489,7 +489,7 @@ const Candidates = () => {
     try {
       const jobsRes = await jobsAPI.getMyJobs();
       const jobs    = (Array.isArray(jobsRes.data) ? jobsRes.data : [])
-        .filter(j => j.days_left !== 0);
+        .filter(j => j.days_left !== 0 && j.is_owner !== false);
       const all = [];
       await Promise.allSettled(jobs.map(job =>
         jobsAPI.getApplicants(job.id, { status: 'shortlisted' })

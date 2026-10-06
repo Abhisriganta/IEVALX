@@ -124,6 +124,17 @@ const jobPost = {
     return Promise.reject(new Error('Not logged in.'));
   },
 
+  // All jobs for the company (COMPANY- and EMPLOYER-posted), no posted_via
+  // filter — Ownership management needs employee-posted jobs (which carry
+  // employer_id) visible alongside unassigned company posts.
+  getAllCompanyJobs: (params) => {
+    const companyId = getCompanyId();
+    if (!companyId) return Promise.reject(new Error('Not logged in.'));
+    return api.get(`/companies/${companyId}/jobs`, {
+      params: buildViewerParams(params || {}),
+    });
+  },
+
   // Pass viewer context so DRAFT/PENDING jobs are visible in View/Edit modals.
   getJobPosting: (id) => api.get(`/jobs/${id}`, { params: buildViewerParams() }),
 
@@ -191,6 +202,10 @@ const jobPost = {
   // ── Public search ───────────────────────────────────────────────────────
   // Backend route: GET /api/jobs/search?q=...&city=...&job_type=...&shift=...
   searchJobs: (params) => api.get('/jobs/search', { params }),
+
+  // ── Ownership reassignment (Company Admin only) ─────────────────────────
+  reassignJobOwner: (jobId, newEmployeeId) =>
+    api.post(`/admin/jobs/${jobId}/reassign/`, { new_employee_id: Number(newEmployeeId) }),
 };
 
 export { jobPost };

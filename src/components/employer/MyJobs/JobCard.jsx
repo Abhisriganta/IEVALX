@@ -97,6 +97,7 @@ const JobCard = ({
   onUnpublish,          
   onRequestRepublish,   
 }) => {
+  const isOwner = job?.is_owner !== false;   // true when own job or flag absent
   const [menuEl, setMenuEl] = useState(null);
   const openMenu   = (e) => { e.stopPropagation(); setMenuEl(e.currentTarget); };
   const closeMenu  = () => setMenuEl(null);
@@ -185,6 +186,8 @@ const JobCard = ({
 
   /* ── Adaptive primary CTA ─────────────────────────────────── */
   const primaryAction = (() => {
+    if (!isOwner)
+      return { label: 'View Details', variant: 'ghost', onClick: () => onView?.(job) };
     if (displayStatus === 'Active')
       return { label: 'View Applicants', variant: 'primary', onClick: () => onViewApplicants?.(job) };
     if (displayStatus === 'Closed')
@@ -337,6 +340,7 @@ const JobCard = ({
 
 
   const menuTrigger = () => (
+    !isOwner ? null :
     <Tooltip title="More actions" arrow>
       <IconButton onClick={openMenu} size="small"
         sx={{
@@ -750,6 +754,23 @@ const JobCard = ({
                   {salaryDisplay || <Box component="span" sx={{ fontSize: '0.8rem', fontWeight: 600 }}>Compensation on request</Box>}
                 </Typography>
               </Tooltip>
+            )}
+
+            {/* Ownership label for non-owners */}
+            {job?.is_owner === false && job?.owner_name && (
+              <Box sx={{
+                display: 'flex', alignItems: 'center', gap: 0.5,
+                px: 1, py: 0.5, borderRadius: '8px',
+                bgcolor: C.sageSoft, mb: 0.5,
+              }}>
+                <PeopleOutlined sx={{ fontSize: 13, color: C.sageText }} />
+                <Typography sx={{
+                  fontSize: '0.72rem', fontWeight: 600, color: C.sageText,
+                  fontStyle: 'italic',
+                }}>
+                  Assigned to {job.owner_name}
+                </Typography>
+              </Box>
             )}
 
             {/* Primary CTA — full width for prominence & thumb-friendly tap area */}

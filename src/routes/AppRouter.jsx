@@ -85,6 +85,7 @@ const BillingAndSubscription  = lazy(() => import('@/components/company/BillingA
 const Employers               = lazy(() => import('@/components/company/Employers/EmployersList'));
 const ComplianceOfficers      = lazy(() => import('@/components/company/ComplianceOfficers/ComplianceOfficersList'));
 const CompanyProfile          = lazy(() => import('@/components/company/CompanyProfile/CompanyProfile'));
+const OwnershipManagement     = lazy(() => import('@/components/company/Ownership/OwnershipManagement'));
 const DocumentReupload        = lazy(() => import('@/components/company/DocumentReupload/DocumentReupload'));
 
 /* EmployerRequestsPage exports two NAMED components, not a default — React.lazy
@@ -357,6 +358,7 @@ const AppRouter = () => {
         <Route path="/company/compliance-officers" element={<Protected roles={[ROLES.COMPANY]}><ComplianceOfficers /></Protected>} />
         <Route path="/company/job-postings"   element={<Protected roles={[ROLES.COMPANY]}><JobPostings /></Protected>} />
         <Route path="/company/jobs-approvals" element={<Protected roles={[ROLES.COMPANY]}><JobsApprovals /></Protected>} />
+        <Route path="/company/ownership"      element={<Protected roles={[ROLES.COMPANY]}><OwnershipManagement /></Protected>} />
         <Route path="/company/employer-requests/edit" element={<Protected roles={[ROLES.COMPANY]}><EditRequestsPage /></Protected>} />
         <Route path="/company/employer-requests/republish" element={<Protected roles={[ROLES.COMPANY]}><RepublishRequestsPage /></Protected>} />
         <Route path="/company/analytics"      element={<Protected roles={[ROLES.COMPANY]}><CompanyAnalytics /></Protected>} />

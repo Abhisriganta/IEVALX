@@ -46,20 +46,19 @@ import {
   ChevronLeft,
   ChevronRight,
   ContactSupport,
-  // New icons for employer sidebar rename (July 2026)
-  EventAvailable,  // Scheduling Hub (was Candidates → People)
-  Verified,        // Round Approvals (was Ranked Results → Leaderboard)
-  // BUILD: 2026-08-24-iaem-sidebar-v1 — IAEM icons
-  VerifiedUser,    // Interviewer Audit (employer IAEM group)
-  Gavel,           // Cases / Appeals
-  Assessment,      // Audit Notes / Calibration
-  MenuBook,        // Coaching Library
-  Security,        // Compliance alerts
-  Timeline,        // Audit Trail
-  ViewModule,      // Model Cards
-  Schedule,        // Slots
-  RateReview,      // Post-interview submission
-  CheckCircle, // Completed Interviews
+  EventAvailable,  
+  Verified,       
+  VerifiedUser,  
+  Gavel,          
+  Assessment,   
+  MenuBook,        
+  Security,        
+  Timeline,        
+  ViewModule,     
+  Schedule,        
+  RateReview,      
+  CheckCircle, 
+  SwapHoriz,  
 } from "@mui/icons-material";
 import { useAuth } from "@/hooks/useAuth";
 import useSidebarCounts from "@/hooks/useSidebarCounts";
@@ -322,6 +321,7 @@ const SIDEBAR_NAV = {
     { label: "Compliance Officers",    path: "/company/compliance-officers", icon: Security },
     { label: "Job Postings",           path: "/company/job-postings",   icon: AddBox },
     { label: "Jobs & Approvals",       path: "/company/jobs-approvals", icon: Work, countKey: "jobsPending" },
+    { label: "Ownership",              path: "/company/ownership",      icon: SwapHoriz },
     {
       id: "employer-requests",
       label: "Employer Requests",

@@ -26,6 +26,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import Autocomplete from '@mui/material/Autocomplete';
+import adminService from '@/services/api/company/adminService';
 
 // ── Palette ──
 const HELPER_DARK  = '#55584F';
@@ -87,6 +88,7 @@ const INITIAL_FORM = {
   companyName: '',
   companyType: '',
   companyTypeOther: '',
+  assignToEmployeeId: '',
   jobTitle: '',
   jobLocation: '',
   completeAddress: '',
@@ -151,18 +153,19 @@ const mapBackendToForm = (job, fallbackCompanyName = '') => {
 const wordCount = (str) => (str?.trim().split(/\s+/).filter(Boolean).length) || 0;
 
 const FIELD_TO_TAB = {
-  companyName: 0, companyType: 0, companyTypeOther: 0, jobTitle: 0, jobLocation: 0,
+  companyName: 0, companyType: 0, companyTypeOther: 0, assignToEmployeeId: 0, jobTitle: 0, jobLocation: 0,
   completeAddress: 0, interviewLocation: 0, jobType: 0, workMode: 0,
   skills: 1, responsibilities: 1, jobDescription: 1,
   expMin: 2, expMax: 2, salaryMin: 2, salaryMax: 2, education: 2,
   gender: 2, candidateCategory: 2, disabilityType: 2, jobShift: 2, languages: 2, applicationDeadline: 2,
 };
 
-const validateFull = (form) => {
+const validateFull = (form, { requireAssignee = false } = {}) => {
   const errors = {};
 
   if (!form.companyName.trim()) errors.companyName = 'Company name is required';
   if (!form.companyType) errors.companyType = 'Select a company type';
+  if (requireAssignee && !form.assignToEmployeeId) errors.assignToEmployeeId = 'Select an employee to assign this job to';
   if (form.companyType === 'Others' && !form.companyTypeOther.trim()) {
     errors.companyTypeOther = 'Please specify';
   }
@@ -403,6 +406,7 @@ const PostJob = ({ open, onClose, createJob, saveDraft, updateJob, editingJob, c
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState('');
+  const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
     if (open) {
@@ -415,6 +419,19 @@ const PostJob = ({ open, onClose, createJob, saveDraft, updateJob, editingJob, c
       setServerError('');
     }
   }, [open, editingJob, companyName]);
+
+  // Load this company's employees so the admin can assign an owner at post time.
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    adminService.getEmployers()
+      .then((res) => {
+        const list = res?.data?.results ?? res?.data?.employers ?? res?.data?.Employers ?? [];
+        if (!cancelled) setEmployees(Array.isArray(list) ? list : []);
+      })
+      .catch(() => { if (!cancelled) setEmployees([]); });
+    return () => { cancelled = true; };
+  }, [open]);
 
   const update = (name) => (e) => {
     const val = e?.target
@@ -456,7 +473,7 @@ const PostJob = ({ open, onClose, createJob, saveDraft, updateJob, editingJob, c
 
   const handlePost = async () => {
     setServerError('');
-    const errs = validateFull(form);
+    const errs = validateFull(form, { requireAssignee: !isEdit });
     setErrors(errs);
     if (Object.keys(errs).length) {
       jumpToFirstError(errs);
@@ -468,7 +485,10 @@ const PostJob = ({ open, onClose, createJob, saveDraft, updateJob, editingJob, c
         const jobId = editingJob.job_id ?? editingJob.id;
         await updateJob(jobId, form);
       } else {
-        await createJob(form);
+        const payload = form.assignToEmployeeId
+          ? { ...form, employer_id: Number(form.assignToEmployeeId) }
+          : form;
+        await createJob(payload);
       }
       handleClose();
     } catch (err) {
@@ -480,7 +500,7 @@ const PostJob = ({ open, onClose, createJob, saveDraft, updateJob, editingJob, c
 
   const handleSaveDraft = async () => {
     setServerError('');
-    const errs = validateFull(form);
+    const errs = validateFull(form, { requireAssignee: !isEdit });
     setErrors(errs);
     if (Object.keys(errs).length) {
       jumpToFirstError(errs);
@@ -488,7 +508,10 @@ const PostJob = ({ open, onClose, createJob, saveDraft, updateJob, editingJob, c
     }
     setSubmitting(true);
     try {
-      await saveDraft(form);
+      const payload = form.assignToEmployeeId
+        ? { ...form, employer_id: Number(form.assignToEmployeeId) }
+        : form;
+      await saveDraft(payload);
       handleClose();
     } catch (err) {
       setServerError(err.friendlyMessage || 'Something went wrong. Please try again.');
@@ -694,6 +717,28 @@ const PostJob = ({ open, onClose, createJob, saveDraft, updateJob, editingJob, c
                 helperText={errors.companyTypeOther}
                 sx={inputSx}
               />
+            )}
+
+            {!isEdit && (
+              <TextField
+                select
+                label="Assign to employee *"
+                value={form.assignToEmployeeId}
+                onChange={update('assignToEmployeeId')}
+                fullWidth
+                size="small"
+                error={!!errors.assignToEmployeeId}
+                helperText={errors.assignToEmployeeId || 'The selected employee becomes the job owner.'}
+                sx={inputSx}
+              >
+                {employees
+                  .filter((emp) => (emp.status || 'ACTIVE') === 'ACTIVE' && emp.role !== 'Company Admin')
+                  .map((emp) => (
+                    <MenuItem key={emp.id} value={emp.id}>
+                      {(emp.full_name || emp.name || emp.email)}{emp.role ? ` — ${emp.role}` : ''}
+                    </MenuItem>
+                  ))}
+              </TextField>
             )}
 
             <TextField

@@ -15,6 +15,7 @@ import {
   BusinessOutlined,
   LocationOnOutlined,
   WorkOutlined,
+  LockOutlined,
 } from '@mui/icons-material';
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -569,6 +570,7 @@ const JobForm = ({
   /* ── READ-ONLY DETAILS VIEW (corporate detail layout) ─────────── */
   if (readOnly) {
     const j = initialData || {};
+    const _notOwner = j.is_owner === false && j.owner_name;
     const skills           = Array.isArray(j.skills) ? j.skills : [];
     const responsibilities = Array.isArray(j.responsibilities) ? j.responsibilities : [];
     const languages        = Array.isArray(j.languages) ? j.languages : [];
@@ -675,6 +677,19 @@ const JobForm = ({
         </DialogTitle>
 
        <DialogContent sx={{ px: { xs: 2.5, sm: 4 }, py: 3, bgcolor: PAGE_BG, '&.MuiDialogContent-root': { pt: 3 } }}>
+          {/* Ownership notice for non-owners */}
+          {_notOwner && (
+            <Box sx={{
+              display: 'flex', alignItems: 'center', gap: 1, mb: 2,
+              px: 2, py: 1.25, borderRadius: '10px',
+              bgcolor: '#EDF3EC', border: '1px solid #D5E3D4',
+            }}>
+              <LockOutlined sx={{ fontSize: 16, color: '#5E815D' }} />
+              <Typography sx={{ fontSize: '0.82rem', fontWeight: 600, color: '#3E5C3D' }}>
+                This job is assigned to {j.owner_name}. You have read-only access.
+              </Typography>
+            </Box>
+          )}
           {/* Title + status */}
           <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'flex-start', gap: 2, mb: 1.5 }}>
             <Typography
