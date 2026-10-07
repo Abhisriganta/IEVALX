@@ -318,10 +318,9 @@ const SIDEBAR_NAV = {
   [ROLES.COMPANY]: [
     { label: "Overview",               path: "/company/overview",       icon: Dashboard },
     { label: "Employers",              path: "/company/employers",      icon: Group },
-    { label: "Compliance Officers",    path: "/company/compliance-officers", icon: Security },
     { label: "Job Postings",           path: "/company/job-postings",   icon: AddBox },
     { label: "Jobs & Approvals",       path: "/company/jobs-approvals", icon: Work, countKey: "jobsPending" },
-    { label: "Ownership",              path: "/company/ownership",      icon: SwapHoriz },
+    { label: "Assign Jobs",            path: "/company/ownership",      icon: SwapHoriz },
     {
       id: "employer-requests",
       label: "Employer Requests",
@@ -342,6 +341,7 @@ const SIDEBAR_NAV = {
         },
       ],
     },
+    { label: "Compliance Officers",    path: "/company/compliance-officers", icon: Security },
     { label: "Analytics",              path: "/company/analytics",      icon: BarChart },
     { label: "Company Engagement",     path: "/company/engagement",     icon: Business },
     { label: "Billing & Subscription", path: "/company/subscription",   icon: CreditCard },

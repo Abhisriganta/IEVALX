@@ -200,7 +200,7 @@ export default function OwnershipManagement() {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2.25, flexWrap: 'wrap', gap: 2 }}>
           <Box>
             <Typography sx={{ fontWeight: 600, color: BRAND.navy, fontSize: 26, lineHeight: 1.2 }}>
-              Ownership
+              Assign Jobs
             </Typography>
             <Typography variant="body2" sx={{ color: BRAND.sageText, mt: 0.25 }}>
               <Box component="span" sx={{ fontWeight: 600 }}>{jobs.length} jobs</Box> across your organisation
@@ -277,16 +277,18 @@ export default function OwnershipManagement() {
         <Table
           size={isMobile ? 'small' : 'medium'}
           sx={{
-            /* Force the navy header onto the head CELLS so the app
-               theme's blue tint can't override the row background. */
+            /* Sage-green header — !important beats the app theme's blue */
+            '& .MuiTableHead-root, & .MuiTableHead-root .MuiTableRow-root': {
+              backgroundColor: `${BRAND.sageSoft} !important`,
+            },
             '& .MuiTableCell-head': {
-              backgroundColor: BRAND.navy,
-              color: BRAND.sageLight,
+              backgroundColor: `${BRAND.sageSoft} !important`,
+              color: `${BRAND.sageText} !important`,
               fontSize: 11,
-              fontWeight: 600,
+              fontWeight: 700,
               letterSpacing: .6,
               textTransform: 'uppercase',
-              borderBottom: 'none',
+              borderBottom: `1px solid ${BRAND.border} !important`,
             },
           }}
         >
